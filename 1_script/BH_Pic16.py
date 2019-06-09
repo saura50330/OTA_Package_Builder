@@ -13,7 +13,7 @@ import os
 #define POS_RES 10
 
 '''
-START_ADD=0x200
+START_ADD=0x2A0
 Hex_File_Path=""
 # "C:\Python27\python.exe C:\Users\acer\Desktop\MASTER_DOCUMENT_V1\START_UP\microchip\boot_loder\bt_ldr\2_Bootloader_Design\boot_loader_Script\BH_Pic16.py"
 resp_info=[]
@@ -35,7 +35,7 @@ def split_by_n( seq, n ):
         seq = seq[n:]
 def Flash_verify():
 	list_read=[0x03,0x00,0x02]
-	address = 0x200
+	address = START_ADD
 	while(address<=0x300):
 		send_data(list_read)
 		address=address+1
@@ -156,8 +156,9 @@ def Write_Hex_64(file_path):
 	print "Image checksum : " + image_checksum + "data lnt: " +  byt_cnt 
 	thefile.write("2 241 240 " + str(image_checksum) + "170\n") # write image_checksum
 	thefile.close()	
-def Write_Hex_to_String_64(file_path):
+def Write_Hex_to_String_64(file_path, DeviceTyp):
 	global temp
+	# validate path and dev type
 	bl_frame_64_data = ""
 	bl_frame_64_add =0
 	eep_frame=[]
@@ -399,9 +400,10 @@ while (1) :
 	option = raw_input("\nOption:") #read user input
 	if ((option == 'K') or (option == 'k')):
 		Hex_File_Path = raw_input("\nEnter complete Hex File path : ") #read hex file path	
+		DeviceTyp = raw_input("\nEnter Device Type 1: Demo , 2: WallSwitch ? : ") #read hex file path	
 		print("\n Hex File Entered : " + Hex_File_Path)
-		#Write_Hex_to_bin_64(Hex_File_Path)
-		Write_Hex_to_String_64(Hex_File_Path)
+		#Write_Hex_to_bin_64(Hex_File_Path) 
+		Write_Hex_to_String_64(Hex_File_Path,DeviceTyp)
 		
 	elif ((option == 'P') or (option == 'p')):
 		ser.open()
